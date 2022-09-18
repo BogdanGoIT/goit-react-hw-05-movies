@@ -1,6 +1,6 @@
 import { Link, useLocation} from "react-router-dom";
 
-export const MoviesPopular = ({ items }) => {
+export const Movie = ({ items }) => {
 
     const location = useLocation();
     return (

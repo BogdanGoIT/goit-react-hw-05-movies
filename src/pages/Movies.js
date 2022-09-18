@@ -1,24 +1,19 @@
-import { MoviesPopular } from "components/MoviesPopular/MoviesPopular";
+import { Movie } from "components/Movie/Movie";
 import { SearchBox } from "components/SearchBox/SearchBox";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import moviesApi from '../services/movies-api';
+import moviesApi from 'services/movies-api';
 
-export const Movies = () => {
+const Movies = () => {
     const [movies, setMovies] = useState([]);
-    // const [searchMovie, setSearchMovie] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
     const query = searchParams.get('query') ?? "";
 
-    console.log(query);
-
 
     useEffect(() => {
-        if (!query) {
-            return;
-        }
+        if (!query) return;
 
-        moviesApi.fetchMovies(`https://api.themoviedb.org/3/search/movie?api_key=1b50ba0e0b99203af5e26bdcee6d2298&query=${query}&language=en-US&page=1&include_adult=false`).then(setMovies)
+        moviesApi.fetchMovies(query).then(setMovies)
 
     }, [query])
 
@@ -26,17 +21,18 @@ export const Movies = () => {
         return null;
     }
 
-    const searchName = (name) => {
+    const handleSearch = (name) => {
         setSearchParams(name !== "" ? { query: name } : {});
 
-        // setSearchMovie(name);
     }
 
     return (
         <div>
-            <SearchBox searchName={searchName} />
-            {movies.results && <MoviesPopular items={movies.results} /> }
+            <SearchBox onSearch={handleSearch} />
+            {movies.results && <Movie items={movies.results} /> }
         </div>
     )
     
 }
+
+export default Movies;

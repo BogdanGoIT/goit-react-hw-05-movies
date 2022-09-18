@@ -1,29 +1,26 @@
-import { useState } from "react"
-
-export const SearchBox = ({searchName}) => {
-
-    const [search, setSearch] = useState('');
-
-    const handleNameChange = evt => {
-        setSearch(evt.currentTarget.value.toLowerCase() );
-    }
+export const SearchBox = ({onSearch}) => {
 
     const handleSubmit = evt => {
         evt.preventDefault();
+
+        const search = evt.currentTarget.elements.query.value;
+
+        console.log(search)
 
         if (search.trim() === '') {
             alert('Введите корректное имя');
             return;
         }
 
-        searchName(search);
-        setSearch('');
+        onSearch(search);
+        evt.currentTarget.reset();
+
     }
 
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" value={search} onChange={handleNameChange} />
+            <input type="text" name="query" />
             <button type="submit">Search</button>
         </form>
     )
